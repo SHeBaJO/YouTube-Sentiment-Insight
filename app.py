@@ -454,11 +454,6 @@ st.markdown("---")
 st.markdown("""
 <div style='text-align: center'>
     
-**YouTube Comment Sentiment Analysis Dashboard** | 
-[GitHub](https://github.com/SHeBaJO/YouTube-Sentiment-Insight) | 
-[Documentation](#)
-
-Built with ❤️ using Streamlit, Transformers, and Pandas
     
 </div>
 """, unsafe_allow_html=True)

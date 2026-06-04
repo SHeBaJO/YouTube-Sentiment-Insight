@@ -1,7 +1,9 @@
 # Core Dependencies
-streamlit==1.28.1
 pandas==2.1.1
 numpy==1.24.3
+
+# Telegram Bot Framework
+python-telegram-bot==20.3
 
 # YouTube API
 google-auth-oauthlib==1.1.0
@@ -12,6 +14,7 @@ google-api-python-client==2.100.0
 transformers==4.34.0
 torch==2.0.1
 huggingface-hub==0.17.3
+nltk==3.8.1
 
 # Advanced NLP
 bertopic==0.15.0
@@ -25,12 +28,15 @@ wordcloud==1.9.3
 # Data Export
 openpyxl==3.1.2
 xlsxwriter==3.1.4
+reportlab==4.0.9
 
 # Utilities
 python-dotenv==1.0.0
 requests==2.31.0
+pydantic==2.5.0
 
 # Development (optional)
 pytest==7.4.3
 black==23.11.0
 flake8==6.1.0
+pylint==3.0.3

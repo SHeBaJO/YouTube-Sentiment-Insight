@@ -1,58 +1,158 @@
-# 🎥 YouTube Comment Sentiment Analysis Dashboard
+# 🎥 YouTube Sentiment Insight Bot
 
-An advanced AI-powered analytics platform for analyzing YouTube comments with sentiment analysis, emotion detection, keyword extraction, and topic modeling.
+An AI-powered Telegram bot for comprehensive YouTube audience sentiment analysis using advanced NLP and machine learning.
 
-## ✨ Features
+## 📋 Overview
 
-### Core Features
-- **YouTube Comment Extraction** - Automatically fetch comments from any YouTube video
-- **Transformer-Based Sentiment Analysis** - Advanced NLP using DistilBERT model
-- **Interactive Dashboard** - Beautiful, responsive analytics interface
-- **Real-time Analysis** - Instant sentiment and emotion processing
-- **CSV & Excel Export** - Download comprehensive reports
+YouTube Sentiment Insight Bot transforms YouTube comment analysis by providing:
 
-### Advanced Analytics
-- **📊 Like Count Analysis** - Analyze engagement metrics and comment popularity
-- **🔑 Keyword Extraction** - Identify top keywords and trends in comments
-- **⭐ Top Positive/Negative Comments** - Find highest-rated comments by sentiment
-- **📈 Trend Analysis** - Track sentiment patterns over time
-- **💬 Engagement Metrics** - View likes, replies, and engagement distribution
+- **Real-time Sentiment Analysis**: Detect positive, negative, and neutral comments using transformer-based models
+- **Multi-emotion Detection**: Identify joy, anger, sadness, fear, love, and surprise
+- **Keyword Extraction**: Discover trending topics and keywords
+- **Engagement Analytics**: Analyze likes, comments, and interaction patterns
+- **Topic Modeling**: Understand main discussion themes using BERTopic
+- **Channel Analytics**: Analyze multiple videos from a channel
+- **Professional Reports**: Export insights in CSV, Excel, and PDF formats
+- **Telegram Integration**: User-friendly bot interface for easy interaction
 
-### Advanced AI Features
-- **😊 Emotion Detection** - Detect 10+ emotions (joy, anger, fear, surprise, etc.)
-- **🌍 Multilingual Support** - Analyze comments in multiple languages (English, Hindi, Tamil, Spanish, etc.)
-- **📚 Topic Modeling** - Automatically identify discussion topics using BERTopic
-- **🔄 Real-time Monitoring** - Continuous comment analysis with auto-refresh capabilities
+## 🏗️ Architecture
 
-### Visualizations
-- Sentiment distribution (pie charts, bar charts)
-- Word clouds for text analysis
-- Engagement trends over time
-- Emotion distribution charts
-- Keyword frequency analysis
-- Topic clustering visualizations
+```
+YouTube Sentiment Insight Bot
+│
+├── bot/                          # Telegram Bot Components
+│   ├── handlers/                 # Command, message, callback handlers
+│   │   ├── command_handlers.py   # /start, /help, /analyze, etc.
+│   │   ├── analysis_handlers.py  # Analysis logic handlers
+│   │   └── message_handlers.py   # Message and callback routing
+│   └── keyboards/                # Telegram UI keyboards
+│       └── reply_keyboards.py    # Inline and reply keyboards
+│
+├── services/                      # Business Logic Services
+│   ├── youtube_service.py         # YouTube API interactions
+│   ├── sentiment_service.py       # Sentiment analysis
+│   ├── emotion_service.py         # Emotion detection
+│   ├── keyword_service.py         # Keyword extraction
+│   ├── topic_service.py           # Topic modeling
+│   └── analytics_service.py       # Analytics aggregation
+│
+├── config/                        # Configuration Management
+│   └── settings.py                # Environment & settings
+│
+├── reports/                       # Report Generation
+│   └── report_generator.py        # CSV, Excel, PDF export
+│
+├── main.py                        # Bot entry point
+├── requirements.txt               # Dependencies
+├── .env.example                   # Environment template
+└── README.md                      # Documentation
+```
 
----
+## 🚀 Features
 
-## 🛠️ Technology Stack
+### Core Commands
 
-| Component | Technology |
-|-----------|-----------|
-| **Frontend** | Streamlit |
-| **NLP/AI** | Transformers, PyTorch, HuggingFace |
-| **Data Processing** | Pandas, NumPy, Scikit-learn |
-| **Visualization** | Plotly, Matplotlib, WordCloud |
-| **API** | YouTube Data API v3 |
-| **Deployment** | Streamlit Cloud, Docker, AWS |
+#### `/start`
+Welcome message with available commands and quick start guide.
 
----
+#### `/help`
+Detailed command reference and usage instructions.
 
-## 📦 Installation
+#### `/analyze <video_url>`
+Analyze a YouTube video's comments:
+- Fetches up to 500 comments
+- Performs sentiment analysis
+- Detects emotions
+- Extracts keywords
+- Generates summary statistics
+
+#### `/sentiment`
+Get sentiment breakdown:
+- Positive percentage
+- Negative percentage
+- Neutral percentage
+- Average confidence score
+
+#### `/emotions`
+Analyze emotional distribution:
+- Joy, Anger, Sadness, Fear, Love, Surprise
+- Percentage breakdown
+- Top emotional trends
+
+#### `/keywords`
+Extract trending keywords:
+- Top 20 keywords by frequency
+- Occurrence count and percentages
+
+#### `/positive`
+Show top positive comments with high sentiment scores.
+
+#### `/negative`
+Show top negative comments for understanding criticism.
+
+#### `/likes`
+Engagement metrics:
+- Most liked comments
+- Average likes per comment
+- Total engagement statistics
+
+#### `/topics`
+Topic modeling insights:
+- Main discussion topics
+- Topic distribution
+- Sample comments per topic
+
+#### `/trends`
+Sentiment trends over time:
+- Daily sentiment distribution
+- Trend visualization data
+
+#### `/channel <channel_url>`
+Analyze entire channel:
+- Recent videos list
+- Overall sentiment across videos
+- Engagement comparison
+
+#### `/report`
+Generate comprehensive reports:
+- **CSV**: Spreadsheet format with detailed data
+- **Excel**: Multi-sheet workbook with summaries
+- **PDF**: Professional formatted report
+
+#### `/settings`
+Configure bot preferences (expanding in future versions).
+
+### Advanced Features
+
+#### 🤖 Transformer-Based NLP
+Uses state-of-the-art models:
+- **Sentiment**: `distilbert-base-uncased-finetuned-sst-2-english`
+- **Emotion**: `j-hartmann/emotion-english-distilroberta-base`
+- **Multilingual**: `xlm-roberta-base` (future)
+
+#### 📊 Topic Modeling
+Implements BERTopic for:
+- Unsupervised topic discovery
+- Topic probability distributions
+- Sample document extraction per topic
+
+#### 🌐 Multilingual Support (Planned)
+Support for:
+- English, Hindi, Malayalam, Tamil, Telugu
+- Spanish, French, German, Arabic, Portuguese
+
+#### 📱 Channel-level Analytics
+- Analyze multiple videos
+- Compare sentiment across videos
+- Track channel engagement trends
+- Identify content performance patterns
+
+## 📥 Installation
 
 ### Prerequisites
-- Python 3.8+
-- pip or conda
-- YouTube Data API key (get it [here](https://console.cloud.google.com/))
+- Python 3.10 or higher
+- Telegram Bot Token
+- YouTube API Key
 
 ### Step 1: Clone Repository
 ```bash
@@ -62,13 +162,13 @@ cd YouTube-Sentiment-Insight
 
 ### Step 2: Create Virtual Environment
 ```bash
-# Using venv
+# Windows
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+venv\Scripts\activate
 
-# Or using conda
-conda create -n youtube-sentiment python=3.10
-conda activate youtube-sentiment
+# macOS/Linux
+python3 -m venv venv
+source venv/bin/activate
 ```
 
 ### Step 3: Install Dependencies
@@ -76,312 +176,243 @@ conda activate youtube-sentiment
 pip install -r requirements.txt
 ```
 
-### Step 4: Setup API Key
-
-#### Option A: Using Streamlit Secrets
-1. Create `.streamlit/secrets.toml`
-```toml
-YOUTUBE_API_KEY = "your_api_key_here"
-```
-
-#### Option B: Using Environment Variables
+### Step 4: Setup Environment Variables
 ```bash
-# Linux/Mac
-export YOUTUBE_API_KEY="your_api_key_here"
+# Copy example file
+cp .env.example .env
 
-# Windows
-set YOUTUBE_API_KEY=your_api_key_here
+# Edit .env with your credentials
+YOUTUBE_API_KEY=your_youtube_api_key_here
+TELEGRAM_BOT_TOKEN=your_telegram_bot_token_here
 ```
 
-### Step 5: Run Application
+### Step 5: Run Bot
 ```bash
-streamlit run app.py
+python main.py
 ```
 
-Access the app at `http://localhost:8501`
+## 🔐 Getting API Keys
 
----
-
-## 🚀 Usage
-
-### Basic Workflow
-
-1. **Open Dashboard**
-   - Navigate to the running Streamlit app
-
-2. **Enter YouTube URL**
-   - Paste a YouTube video link in the input field
-   - Example: `https://www.youtube.com/watch?v=dQw4w9WgXcQ`
-
-3. **Configure Analysis**
-   - Set maximum comments to analyze (10-500)
-   - Toggle features (emotions, keywords, trends, topics)
-
-4. **Start Analysis**
-   - Click "🚀 Analyze Comments" button
-   - Wait for analysis to complete
-
-5. **Explore Results**
-   - View KPI cards with summary statistics
-   - Check visualizations and trends
-   - Filter comments by sentiment
-   - Export reports
-
-### Export Options
-
-- **CSV Export** - Simple comma-separated file
-- **Excel Report** - Multi-sheet workbook with detailed analysis
-- **Summary Report** - High-level metrics and statistics
-
----
-
-## 📊 API Key Setup
-
-### Getting YouTube API Key
-
+### YouTube API Key
 1. Go to [Google Cloud Console](https://console.cloud.google.com/)
 2. Create a new project
-3. Enable "YouTube Data API v3"
-4. Create OAuth 2.0 credentials
-5. Get your API key
-6. Add to `.streamlit/secrets.toml` or environment variables
+3. Enable **YouTube Data API v3**
+4. Create OAuth 2.0 credentials (API key)
+5. Copy the key to `.env`
 
----
+### Telegram Bot Token
+1. Chat with [@BotFather](https://t.me/botfather) on Telegram
+2. Use `/newbot` command
+3. Follow instructions to create bot
+4. Copy the token to `.env`
 
-## 🔒 Security
-
-### Best Practices
-- ✅ Never commit API keys to GitHub
-- ✅ Use `.gitignore` to exclude sensitive files
-- ✅ Store secrets in environment variables or `.streamlit/secrets.toml`
-- ✅ Use OAuth 2.0 for production deployments
-- ✅ Rotate API keys regularly
-
-### Files to Never Commit
-```
-.env
-.streamlit/secrets.toml
-credentials.json
-*.key
-```
-
----
-
-## 📁 Project Structure
+## 📊 Data Flow
 
 ```
-YouTube-Sentiment-Insight/
-├── app.py                          # Main Streamlit application
-├── requirements.txt                # Python dependencies
-├── .gitignore                      # Git ignore rules
-├── .streamlit/
-│   ├── config.toml                 # Streamlit configuration
-│   └── secrets_template.toml       # Secrets template
-├── src/
-│   ├── __init__.py
-│   ├── config.py                   # Configuration management
-│   ├── utils/
-│   │   ├── __init__.py
-│   │   └── youtube_api.py          # YouTube API utilities
-│   ├── models/
-│   │   ├── __init__.py
-│   │   ├── sentiment.py            # Sentiment analysis
-│   │   └── emotion.py              # Emotion detection
-│   ├── analytics/
-│   │   ├── __init__.py
-│   │   ├── keywords.py             # Keyword extraction
-│   │   ├── trends.py               # Trend analysis
-│   │   └── topics.py               # Topic modeling
-│   └── dashboard/
-│       ├── __init__.py
-│       ├── visualizations.py       # Visualization utilities
-│       └── export.py               # Export functionality
-├── README.md                       # Documentation
-└── LICENSE                         # License file
+User Input (Telegram)
+    ↓
+Message Handler Router
+    ↓
+Analysis Handler (if YouTube URL)
+    ↓
+YouTube Service ← Fetch Comments
+    ↓
+Sentiment Service ← Analyze Sentiment
+    ↓
+Emotion Service ← Detect Emotions
+    ↓
+Keyword Service ← Extract Keywords
+    ↓
+Topic Service ← Model Topics
+    ↓
+Analytics Service ← Aggregate Stats
+    ↓
+Report Generator (if requested)
+    ↓
+Telegram Response (formatted message or file)
 ```
 
----
+## 💾 Database & Storage
 
-## 🎯 Model Information
+Currently uses:
+- **Comments Data**: Stored in pandas DataFrames (in-memory)
+- **User Session Data**: Stored in Telegram context
+- **Reports**: Generated on-demand in `/reports/` directory
 
-### Sentiment Analysis
-- **Model**: `distilbert-base-uncased-finetuned-sst-2-english`
-- **Accuracy**: ~92% on sentiment classification
-- **Languages**: English
-- **Output**: Positive, Negative, Neutral + confidence score
-
-### Emotion Detection
-- **Model**: `j-hartmann/emotion-english-distilroberta-base`
-- **Emotions**: Joy, Sadness, Anger, Fear, Surprise, Neutral
-- **Languages**: English
-- **Output**: Emotion label + confidence score
-
-### Topic Modeling
-- **Algorithm**: BERTopic (BERT-based topic modeling)
-- **Method**: Transformer-based clustering
-- **Output**: Topic labels, keywords, and assignments
-
-### Multilingual Support (Optional)
-- **Model**: `xlm-roberta-base`
-- **Languages**: 100+ languages supported
-- **Accuracy**: Varies by language
-
----
-
-## 📈 Sample Dashboard Output
-
-### KPI Section
-```
-📝 Total Comments: 234
-😊 Positive: 156 (66.7%)
-😠 Negative: 45 (19.2%)
-😐 Neutral: 33 (14.1%)
-⭐ Avg Confidence: 0.94
-```
-
-### Engagement Metrics
-```
-👍 Total Likes: 2,340
-📊 Average Likes: 10.1
-🔝 Max Likes: 567
-💬 Average Replies: 2.3
-```
-
----
+Future: Integration with SQLite/PostgreSQL for persistent storage.
 
 ## 🔧 Configuration
 
-### Customize Analysis Parameters
+### Default Settings (config/settings.py)
 
-Edit `src/config.py`:
 ```python
-class Config:
-    # Model Configuration
-    SENTIMENT_MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
-    EMOTION_MODEL = "j-hartmann/emotion-english-distilroberta-base"
-    
-    # Analysis Settings
-    MAX_COMMENTS_DEFAULT = 100
-    CONFIDENCE_THRESHOLD = 0.5
-    
-    # Keyword Extraction
-    TOP_KEYWORDS_COUNT = 10
+SENTIMENT_MODEL = "distilbert-base-uncased-finetuned-sst-2-english"
+EMOTION_MODEL = "j-hartmann/emotion-english-distilroberta-base"
+DEFAULT_MAX_COMMENTS = 500
+KEYWORD_LIMIT = 20
+TOP_COMMENTS_LIMIT = 10
 ```
 
----
+### Environment Variables
 
-## 🚀 Deployment
+```env
+# Required
+YOUTUBE_API_KEY=<your_key>
+TELEGRAM_BOT_TOKEN=<your_token>
 
-### Streamlit Cloud
-```bash
-# Push to GitHub, then deploy via Streamlit Cloud
-# https://streamlit.io/cloud
+# Optional
+MAX_COMMENT_BATCH=100
+REQUEST_TIMEOUT=30
 ```
 
-### Docker Deployment
-```dockerfile
-FROM python:3.10-slim
-WORKDIR /app
-COPY requirements.txt .
-RUN pip install -r requirements.txt
-COPY . .
-CMD ["streamlit", "run", "app.py"]
-```
+## 🚦 Error Handling
 
-### AWS/Heroku
-Deploy using standard Python deployment processes with environment variables for API key.
+Bot handles:
+- Invalid YouTube URLs
+- API rate limits
+- Network timeouts
+- Invalid credentials
+- No comments on video
+- Model loading failures
 
----
+Each error provides user-friendly feedback.
 
-## 🧪 Testing
+## 📦 Dependencies
 
-```bash
-# Run tests
-pytest tests/
+### Core
+- **python-telegram-bot** (20.3): Telegram API client
+- **google-api-python-client** (2.100.0): YouTube API
 
-# Code quality check
-flake8 src/
-black src/
-```
+### NLP
+- **transformers** (4.34.0): Hugging Face models
+- **torch** (2.0.1): PyTorch engine
+- **bertopic** (0.15.0): Topic modeling
+- **nltk** (3.8.1): Natural Language Toolkit
 
----
+### Data Processing
+- **pandas** (2.1.1): Data manipulation
+- **numpy** (1.24.3): Numerical computing
+- **scikit-learn** (1.3.2): ML utilities
 
-## 📊 Performance Metrics
+### Export
+- **openpyxl** (3.1.2): Excel writing
+- **reportlab** (4.0.9): PDF generation
 
-- **Comment Fetch Time**: 2-5 seconds (100 comments)
-- **Sentiment Analysis**: 1-3 seconds (100 comments)
-- **Emotion Detection**: 2-5 seconds (100 comments)
-- **Keyword Extraction**: <1 second (100 comments)
-- **Topic Modeling**: 5-15 seconds (100 comments)
+## 📈 Performance
 
----
+- Comment Analysis: ~100 comments/minute (CPU)
+- Model Loading: ~10-15 seconds (first run)
+- Sentiment Accuracy: ~92% (DistilBERT model)
+- Emotion Detection: ~85% accuracy
 
-## 🐛 Troubleshooting
+## 🔒 Security
 
-### Issue: API Key Not Found
-**Solution**: Ensure `.streamlit/secrets.toml` exists and contains `YOUTUBE_API_KEY`
+- ✅ Environment variables for credentials (never hardcoded)
+- ✅ HTTPS for API calls
+- ✅ Rate limiting via Telegram API
+- ✅ No user data persistence without consent
+- ✅ Input validation on all user inputs
 
-### Issue: Model Download Failed
-**Solution**: Check internet connection, wait for retry, or increase timeout
-
-### Issue: Out of Memory
-**Solution**: Reduce `max_comments` setting or increase system RAM
-
-### Issue: No Comments Found
-**Solution**: Video might have disabled comments or be private/deleted
-
----
-
-## 📝 Example Use Cases
-
-1. **Brand Monitoring** - Track customer sentiment on product videos
-2. **Content Analysis** - Understand audience feedback on channel
-3. **Marketing Insights** - Identify trending topics and concerns
-4. **Research** - Analyze public opinion on YouTube videos
-5. **Competitive Analysis** - Compare sentiment across competitor videos
-
----
-
-## 📄 License
-
-This project is licensed under the MIT License - see [LICENSE](LICENSE) file for details.
-
----
+### Best Practices
+1. Keep `.env` file secure (add to `.gitignore`)
+2. Rotate API keys regularly
+3. Monitor API usage and quotas
+4. Use separate bot token for production
+5. Enable Telegram bot privacy mode
 
 ## 🤝 Contributing
 
-Contributions are welcome! Please follow these steps:
+Contributions welcome! Areas needing help:
 
-1. Fork the repository
-2. Create a feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit changes (`git commit -m 'Add AmazingFeature'`)
-4. Push to branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
+- [ ] Multilingual sentiment analysis
+- [ ] Real-time monitoring feature
+- [ ] Persistent database integration
+- [ ] Web dashboard
+- [ ] Advanced topic visualization
+- [ ] Sentiment trend predictions
 
----
+## 🐛 Troubleshooting
+
+### Bot won't start
+```bash
+# Check .env file exists and has valid tokens
+# Verify Python version: python --version
+# Check internet connection
+# Try: python main.py --debug
+```
+
+### Models not loading
+```bash
+# Clear cache: rm -rf ~/.cache/huggingface
+# Reinstall: pip install --upgrade transformers torch
+# Check disk space for models
+```
+
+### YouTube API errors
+```bash
+# Verify API key is enabled for YouTube Data API v3
+# Check quota at console.cloud.google.com
+# Ensure video has comments enabled
+```
+
+### Memory issues
+```bash
+# Reduce MAX_COMMENTS in .env
+# Use device-specific optimization
+# Consider GPU support for faster processing
+```
+
+## 📚 Resources
+
+- [Telegram Bot API](https://core.telegram.org/bots/api)
+- [YouTube Data API](https://developers.google.com/youtube/v3)
+- [Hugging Face Models](https://huggingface.co/models)
+- [BERTopic Documentation](https://maartengr.github.io/BERTopic/)
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file for details.
+
+## 👨‍💻 Author
+
+**SHeBaJO**
+- GitHub: [@SHeBaJO](https://github.com/SHeBaJO)
+- Project: [YouTube-Sentiment-Insight](https://github.com/SHeBaJO/YouTube-Sentiment-Insight)
+
+## 🎯 Roadmap
+
+### v1.1 (Q1 2025)
+- [ ] Real-time comment monitoring
+- [ ] Persistent storage (SQLite)
+- [ ] Advanced filtering options
+- [ ] Comment sentiment distribution chart
+
+### v1.2 (Q2 2025)
+- [ ] Multilingual support
+- [ ] Web dashboard
+- [ ] Scheduled analysis reports
+- [ ] Comment sentiment predictions
+
+### v2.0 (Q3 2025)
+- [ ] Machine learning model training
+- [ ] Custom sentiment models
+- [ ] Advanced analytics engine
+- [ ] API for third-party integration
+
+## 🙏 Acknowledgments
+
+- Hugging Face for transformer models
+- python-telegram-bot team
+- Google for YouTube API
+- Open-source community
 
 ## 📞 Support
 
-For issues, questions, or suggestions:
-- Open an [Issue](https://github.com/SHeBaJO/YouTube-Sentiment-Insight/issues)
-- Submit a [Pull Request](https://github.com/SHeBaJO/YouTube-Sentiment-Insight/pulls)
-- Check [Discussions](https://github.com/SHeBaJO/YouTube-Sentiment-Insight/discussions)
+For issues and feature requests:
+1. Check [Troubleshooting](#troubleshooting) section
+2. Search existing [GitHub Issues](https://github.com/SHeBaJO/YouTube-Sentiment-Insight/issues)
+3. Open new issue with detailed description
 
 ---
 
-## 🎓 Credits
-
-- **Streamlit** - Interactive dashboard framework
-- **Hugging Face** - NLP models and transformers
-- **YouTube Data API** - Comment extraction
-- **BERTopic** - Topic modeling
-
----
-
-## ⭐ Star History
-
-If you find this project helpful, please star ⭐ the repository!
-
----
-
-**Made with ❤️ for the Data Science and NLP Community**
+**Made with ❤️ by SHeBaJO | Last Updated: December 2024**
