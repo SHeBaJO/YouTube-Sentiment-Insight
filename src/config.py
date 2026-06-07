@@ -4,6 +4,10 @@ Configuration and environment variables for YouTube Sentiment Analysis
 import os
 import streamlit as st
 from typing import Optional
+from dotenv import load_dotenv
+
+
+load_dotenv()
 
 
 def get_api_key() -> str:

@@ -83,6 +83,10 @@ Type /help for more information.
 📄 **/report** - Generate downloadable report
    Formats: CSV, Excel, PDF
 
+📥 **/download** - Download video or audio from YouTube
+   Usage: /download <video_url> [video|audio]
+   Or just type /download after analyzing a video
+
 ⚙️ **/settings** - Configure bot preferences
 
 ℹ️ **/about** - About this bot

@@ -53,6 +53,7 @@ def main() -> None:
         app.add_handler(CommandHandler("emotions", message_handlers.analysis.get_emotion_analysis))
         app.add_handler(CommandHandler("keywords", message_handlers.analysis.get_keywords))
         app.add_handler(CommandHandler("likes", message_handlers.analysis.get_engagement_metrics))
+        app.add_handler(CommandHandler("download", message_handlers.analysis.download_video))
         
         # Message handler for text messages
         app.add_handler(MessageHandler(filters.TEXT & ~filters.COMMAND, message_handlers.handle_message))

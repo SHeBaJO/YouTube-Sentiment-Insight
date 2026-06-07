@@ -87,6 +87,15 @@ class MessageHandlers:
                     "https://youtube.com/@channelname"
                 )
             
+            elif text == "📥 Download":
+                if "current_video" in context.user_data:
+                    await update.message.reply_text(
+                        "📥 Select download format:",
+                        reply_markup=BotKeyboards.get_download_keyboard()
+                    )
+                else:
+                    await update.message.reply_text("📥 Please analyze a video first!")
+            
             elif text == "📄 Report":
                 if "current_df" in context.user_data:
                     await update.message.reply_text(
@@ -190,6 +199,59 @@ class CallbackHandlers:
                     f"📄 Generating {report_format} report...\n\n"
                     "This feature is coming soon!"
                 )
+            
+            # Download callbacks
+            elif callback_data.startswith("download_"):
+                format_type = callback_data.replace("download_", "")
+                if "current_video" in context.user_data:
+                    video_info = context.user_data["current_video"]
+                    video_id = video_info.get("video_id")
+                    url = f"https://www.youtube.com/watch?v={video_id}"
+                    
+                    await query.edit_message_text(f"⏳ Downloading {format_type} from YouTube...")
+                    
+                    import os
+                    from services.download_service import DownloadService
+                    res = DownloadService.download(url, format_type=format_type)
+                    if not res.get("success"):
+                        await query.edit_message_text(f"❌ Download failed: {res.get('error')}")
+                        return
+                        
+                    filepath = res["filepath"]
+                    title = res["title"]
+                    size_bytes = res["size_bytes"]
+                    
+                    if size_bytes > 50 * 1024 * 1024:
+                        await query.edit_message_text(
+                            f"⚠️ File is too large ({size_bytes / (1024*1024):.1f}MB) to send via Telegram (50MB limit).\n"
+                            f"Please try downloading as **audio** instead."
+                        )
+                        if os.path.exists(filepath):
+                            os.remove(filepath)
+                        return
+                        
+                    await query.edit_message_text("📤 Uploading file to Telegram...")
+                    
+                    with open(filepath, "rb") as f:
+                        if format_type == "audio":
+                            await query.message.reply_audio(
+                                audio=f,
+                                title=title,
+                                filename=os.path.basename(filepath)
+                            )
+                        else:
+                            await query.message.reply_video(
+                                video=f,
+                                filename=os.path.basename(filepath),
+                                caption=f"🎬 {title}"
+                            )
+                            
+                    await query.message.delete()
+                    
+                    if os.path.exists(filepath):
+                        os.remove(filepath)
+                else:
+                    await query.edit_message_text("❌ Please analyze a video first!")
             
             # Language callbacks
             elif callback_data.startswith("lang_"):

@@ -1,41 +1,42 @@
 """
-Test suite for YouTube Sentiment Analysis Dashboard
+Test suite for YouTube Sentiment Insight.
 """
-import pytest
+import importlib
 import sys
 from pathlib import Path
 
-# Add src to path
+import pytest
+
 sys.path.insert(0, str(Path(__file__).parent.parent))
 
 
 class TestSentimentAnalyzer:
-    """Test sentiment analysis functionality"""
-    
+    """Test sentiment analysis functionality."""
+
     def test_sentiment_analyzer_initialization(self):
-        """Test sentiment analyzer can be initialized"""
         try:
             from src.models.sentiment import SentimentAnalyzer
+
             analyzer = SentimentAnalyzer()
             assert analyzer is not None
         except ImportError:
             pytest.skip("Transformers not installed")
-    
+
     def test_sentiment_positive(self):
-        """Test positive sentiment detection"""
         try:
             from src.models.sentiment import SentimentAnalyzer
+
             analyzer = SentimentAnalyzer()
             result = analyzer.analyze_comment("This is amazing and wonderful!")
             assert "sentiment" in result
             assert result["confidence"] > 0
         except Exception:
             pytest.skip("Model loading failed")
-    
+
     def test_sentiment_negative(self):
-        """Test negative sentiment detection"""
         try:
             from src.models.sentiment import SentimentAnalyzer
+
             analyzer = SentimentAnalyzer()
             result = analyzer.analyze_comment("This is terrible and awful!")
             assert "sentiment" in result
@@ -45,97 +46,88 @@ class TestSentimentAnalyzer:
 
 
 class TestKeywordExtractor:
-    """Test keyword extraction functionality"""
-    
+    """Test keyword extraction functionality."""
+
     def test_keyword_extractor_initialization(self):
-        """Test keyword extractor initialization"""
         from src.analytics.keywords import KeywordExtractor
+
         extractor = KeywordExtractor()
         assert extractor is not None
-    
+
     def test_text_cleaning(self):
-        """Test text cleaning"""
         from src.analytics.keywords import KeywordExtractor
+
         extractor = KeywordExtractor()
-        
         text = "Check out this URL: http://example.com! @mention #hashtag"
         cleaned = extractor.clean_text(text)
-        
+
         assert "http" not in cleaned
         assert "@" not in cleaned
         assert cleaned != ""
-    
+
     def test_keyword_extraction(self):
-        """Test keyword extraction"""
         from src.analytics.keywords import KeywordExtractor
+
         extractor = KeywordExtractor()
-        
         text = "Python machine learning natural language processing"
         keywords = extractor.extract_keywords(text)
-        
+
         assert len(keywords) > 0
         assert "python" in keywords
 
 
 class TestYouTubeAPI:
-    """Test YouTube API utilities"""
-    
+    """Test YouTube API utilities."""
+
     def test_video_id_extraction_youtube_com(self):
-        """Test video ID extraction from youtube.com"""
         from src.utils.youtube_api import YouTubeCommentExtractor
-        
+
         url = "https://www.youtube.com/watch?v=dQw4w9WgXcQ"
         video_id = YouTubeCommentExtractor.extract_video_id(url)
-        
+
         assert video_id == "dQw4w9WgXcQ"
-    
+
     def test_video_id_extraction_youtu_be(self):
-        """Test video ID extraction from youtu.be"""
         from src.utils.youtube_api import YouTubeCommentExtractor
-        
+
         url = "https://youtu.be/dQw4w9WgXcQ"
         video_id = YouTubeCommentExtractor.extract_video_id(url)
-        
+
         assert video_id == "dQw4w9WgXcQ"
-    
+
     def test_invalid_url(self):
-        """Test invalid URL handling"""
         from src.utils.youtube_api import YouTubeCommentExtractor
-        
+
         url = "https://www.example.com"
         video_id = YouTubeCommentExtractor.extract_video_id(url)
-        
+
         assert video_id is None
 
 
 class TestConfig:
-    """Test configuration"""
-    
+    """Test configuration."""
+
     def test_config_structure(self):
-        """Test config file exists and has required structure"""
         from src import config as config_module
-        import importlib
-        
-        # Reload to test
+
         importlib.reload(config_module)
-        assert hasattr(config_module, 'Config')
-    
+        assert hasattr(config_module, "Config")
+
     def test_config_values(self):
-        """Test config has required values"""
         from src.config import Config
-        
-        assert hasattr(Config, 'SENTIMENT_MODEL')
-        assert hasattr(Config, 'EMOTION_MODEL')
-        assert hasattr(Config, 'MAX_COMMENTS_DEFAULT')
+
+        assert hasattr(Config, "SENTIMENT_MODEL")
+        assert hasattr(Config, "EMOTION_MODEL")
+        assert hasattr(Config, "MAX_COMMENTS_DEFAULT")
 
 
 class TestEmotionDetector:
-    """Test emotion detection"""
-    
+    """Test emotion detection."""
+
     def test_emotion_detector_initialization(self):
-        """Test emotion detector can be initialized"""
         try:
             from src.models.emotion import EmotionDetector
+
             detector = EmotionDetector()
             assert detector is not None
         except ImportError:
@@ -143,20 +135,21 @@ class TestEmotionDetector:
 
 
 class TestTrendAnalyzer:
-    """Test trend analysis"""
-    
+    """Test trend analysis."""
+
     def test_trend_analyzer(self):
-        """Test trend analyzer functionality"""
         import pandas as pd
+
         from src.analytics.trends import TrendAnalyzer
-        
-        # Create sample data
-        df = pd.DataFrame({
-            'published_at': pd.date_range('2024-01-01', periods=10),
-            'sentiment': ['Positive 😊'] * 5 + ['Negative 😠'] * 5,
-            'likes': list(range(10))
-        })
-        
+
+        df = pd.DataFrame(
+            {
+                "published_at": pd.date_range("2024-01-01", periods=10),
+                "sentiment": ["Positive"] * 5 + ["Negative"] * 5,
+                "likes": list(range(10)),
+            }
+        )
+
         trends = TrendAnalyzer.daily_sentiment_trends(df)
         assert not trends.empty
 

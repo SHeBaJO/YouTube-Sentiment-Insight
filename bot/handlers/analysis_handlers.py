@@ -300,3 +300,81 @@ What would you like to do next?
         except Exception as e:
             logger.error(f"Error in get_engagement_metrics: {e}")
             await update.message.reply_text(f"❌ Error: {str(e)[:100]}")
+
+    async def download_video(self, update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
+        """Handle YouTube video downloading command"""
+        try:
+            url = None
+            if context.args:
+                url = context.args[0]
+            elif "current_video" in context.user_data:
+                video_info = context.user_data["current_video"]
+                video_id = video_info.get("video_id")
+                if video_id:
+                    url = f"https://www.youtube.com/watch?v={video_id}"
+            
+            if not url:
+                await update.message.reply_text(
+                    "📥 Please provide a valid YouTube URL:\n"
+                    "/download https://youtube.com/watch?v=...\n\n"
+                    "Or analyze a video first, then type /download."
+                )
+                return
+                
+            status_msg = await update.message.reply_text("⏳ Preparing download...")
+            
+            format_type = "video"
+            if len(context.args) > 1 and context.args[1].lower() in ["audio", "mp3", "m4a"]:
+                format_type = "audio"
+            elif len(context.args) > 0 and context.args[0].lower() in ["audio", "mp3", "m4a"]:
+                format_type = "audio"
+                if len(context.args) > 1:
+                    url = context.args[1]
+            
+            await status_msg.edit_text(f"📥 Downloading {format_type} from YouTube...")
+            
+            import os
+            from services.download_service import DownloadService
+            res = DownloadService.download(url, format_type=format_type)
+            if not res.get("success"):
+                await status_msg.edit_text(f"❌ Download failed: {res.get('error')}")
+                return
+                
+            filepath = res["filepath"]
+            title = res["title"]
+            size_bytes = res["size_bytes"]
+            
+            if size_bytes > 50 * 1024 * 1024:
+                await status_msg.edit_text(
+                    f"⚠️ File is too large ({size_bytes / (1024*1024):.1f}MB) to send via Telegram (50MB limit).\n"
+                    f"Please try downloading as **audio** instead:\n"
+                    f"`/download {url} audio`"
+                )
+                if os.path.exists(filepath):
+                    os.remove(filepath)
+                return
+                
+            await status_msg.edit_text("📤 Uploading file to Telegram...")
+            
+            with open(filepath, "rb") as f:
+                if format_type == "audio":
+                    await update.message.reply_audio(
+                        audio=f,
+                        title=title,
+                        filename=os.path.basename(filepath)
+                    )
+                else:
+                    await update.message.reply_video(
+                        video=f,
+                        filename=os.path.basename(filepath),
+                        caption=f"🎬 {title}"
+                    )
+                    
+            await status_msg.delete()
+            
+            if os.path.exists(filepath):
+                os.remove(filepath)
+                
+        except Exception as e:
+            logger.error(f"Error in download_video handler: {e}")
+            await update.message.reply_text(f"❌ Error: {str(e)[:100]}")

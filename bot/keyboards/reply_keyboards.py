@@ -15,7 +15,7 @@ class BotKeyboards:
             [KeyboardButton("📊 Statistics"), KeyboardButton("😊 Sentiment")],
             [KeyboardButton("🔑 Keywords"), KeyboardButton("💬 Top Comments")],
             [KeyboardButton("😌 Emotions"), KeyboardButton("📈 Trends")],
-            [KeyboardButton("📱 Channel"), KeyboardButton("📄 Report")],
+            [KeyboardButton("📱 Channel"), KeyboardButton("📥 Download"), KeyboardButton("📄 Report")],
             [KeyboardButton("ℹ️ Help"), KeyboardButton("⚙️ Settings")]
         ]
         return ReplyKeyboardMarkup(keyboard, resize_keyboard=True)
@@ -58,6 +58,20 @@ class BotKeyboards:
             ],
             [
                 InlineKeyboardButton("📄 PDF", callback_data="report_pdf"),
+                InlineKeyboardButton("⬅️ Cancel", callback_data="back_to_main")
+            ]
+        ]
+        return InlineKeyboardMarkup(keyboard)
+
+    @staticmethod
+    def get_download_keyboard() -> InlineKeyboardMarkup:
+        """Get download format selection keyboard"""
+        keyboard = [
+            [
+                InlineKeyboardButton("🎬 Video (MP4)", callback_data="download_video"),
+                InlineKeyboardButton("🎵 Audio (M4A)", callback_data="download_audio")
+            ],
+            [
                 InlineKeyboardButton("⬅️ Cancel", callback_data="back_to_main")
             ]
         ]

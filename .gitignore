@@ -69,8 +69,8 @@ reports/
 temp/
 cache/
 
-# Streamlit (old)
-.streamlit/
+# Streamlit
+# Keep non-secret Streamlit project settings tracked, but never commit secrets.
 
 # Data
 data/
